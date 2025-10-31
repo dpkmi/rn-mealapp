@@ -1,6 +1,5 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
-import { useTheme } from "../src/ui/theme";
 import CategoriesGridTile from "../components/CategoriesGridTile";
 
 export default function App() {

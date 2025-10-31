@@ -11,9 +11,11 @@ import { useMealsStore } from "../src/stores/useMealsStore";
 import { useShallow } from "zustand/react/shallow";
 import type { Category } from "../src/db/types";
 import { useEffect } from "react";
+import { useRouter } from "expo-router";
 
 const CategoriesGridTile = () => {
   const theme = useTheme();
+  const router = useRouter();
 
   const { categories, loadingCategories, error, loadCategories } =
     useMealsStore(
@@ -37,7 +39,7 @@ const CategoriesGridTile = () => {
         style={[
           styles.card,
           {
-            backgroundColor: theme.colors.primary,
+            backgroundColor: item.color,
           },
         ]}
       >
@@ -45,7 +47,7 @@ const CategoriesGridTile = () => {
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           android_ripple={{ color: "#ccc" }}
           onPress={() => {
-            console.log("Pressed", item.title);
+            router.push(`/categories/${item.id}`);
           }}
         >
           <Text>{item.title}</Text>
