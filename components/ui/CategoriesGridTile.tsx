@@ -1,15 +1,16 @@
 import {
   FlatList,
   ListRenderItem,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
   View,
 } from "react-native";
-import { useTheme } from "../src/ui/theme";
-import { useMealsStore } from "../src/stores/useMealsStore";
+import { useTheme } from "../../src/ui/theme";
+import { useMealsStore } from "../../src/stores/useMealsStore";
 import { useShallow } from "zustand/react/shallow";
-import type { Category } from "../src/db/types";
+import type { Category } from "../../src/db/types";
 import { useEffect } from "react";
 import { useRouter } from "expo-router";
 
@@ -17,15 +18,13 @@ const CategoriesGridTile = () => {
   const theme = useTheme();
   const router = useRouter();
 
-  const { categories, loadingCategories, error, loadCategories } =
-    useMealsStore(
-      useShallow((s) => ({
-        categories: s.categories,
-        loadingCategories: s.loadingCategories,
-        error: s.error,
-        loadCategories: s.loadCategories,
-      }))
-    );
+  const { categories, error, loadCategories } = useMealsStore(
+    useShallow((s) => ({
+      categories: s.categories,
+      error: s.error,
+      loadCategories: s.loadCategories,
+    }))
+  );
 
   useEffect(() => {
     loadCategories();
@@ -44,7 +43,10 @@ const CategoriesGridTile = () => {
         ]}
       >
         <Pressable
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          style={({ pressed }) => [
+            styles.button,
+            pressed ? { opacity: 0.7 } : null,
+          ]}
           android_ripple={{ color: "#ccc" }}
           onPress={() => {
             router.push(`/categories/${item.id}`);
@@ -58,8 +60,9 @@ const CategoriesGridTile = () => {
 
   return (
     <View style={{ gap: theme.spacing.md, flex: 1 }}>
-      <Text style={{ fontSize: theme.fontsize.lg }}>Categories</Text>
-      <View style={{ flex: 1, flexDirection: "row", width: "100%" }}>
+      <View
+        style={{ flex: 1, flexDirection: "row", width: "100%", marginTop: 20 }}
+      >
         <FlatList
           key={listKey}
           data={categories}
@@ -85,7 +88,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     width: "47%",
     height: 150,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    overflow: Platform.OS === "android" ? "hidden" : "visible",
   },
+  button: { flex: 1, justifyContent: "center", alignItems: "center" },
 });
 
 export default CategoriesGridTile;

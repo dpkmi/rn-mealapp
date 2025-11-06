@@ -1,8 +1,8 @@
-import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { useMealsStore } from "../src/stores/useMealsStore";
 import { ActivityIndicator, Text, View } from "react-native";
+import { Stack } from "expo-router";
 
 export default function RootLayout() {
   const bootstrapped = useMealsStore((s) => s.bootstrapped);
@@ -28,8 +28,14 @@ export default function RootLayout() {
 
   return (
     <>
-      <Stack />
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
+      <Stack
+        screenOptions={{
+          animation: "slide_from_right",
+          headerStyle: { backgroundColor: "#707070ff" },
+          headerTintColor: "#fff",
+        }}
+      />
     </>
   );
 }
